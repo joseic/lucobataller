@@ -401,7 +401,7 @@ function _nikadevs_cms_shortcode_process($text, $filter) {
   }
 
   // Save the Shortcodes in the local cache.
-  _shortcode_tags($shortcodes_enabled);
+  _shortcode_get_shortcodes($shortcodes_enabled);
 
   // Processing recursively, now embeding tags within other tags is supported!
   $chunks = preg_split('!(\[{1,2}.*?\]{1,2})!', $text, -1, PREG_SPLIT_DELIM_CAPTURE);
@@ -465,7 +465,7 @@ function _nikadevs_cms_shortcode_process($text, $filter) {
         array_unshift($heap_index, '_string_');
         array_unshift($heap, _shortcode_process_tag($m));
         // In shortcode can be used another Format with differents shortcodes, so restore the cache
-        _shortcode_tags($shortcodes_enabled);
+        _shortcode_get_shortcodes($shortcodes_enabled);
       }
       elseif ($c[0] == '/') {
         // Indicate a closing tag, so we process the heap.
@@ -492,7 +492,7 @@ function _nikadevs_cms_shortcode_process($text, $filter) {
             );
             $str = _shortcode_process_tag($m);
             // In shortcode can be used another Format with differents shortcodes, so restore the cache
-            _shortcode_tags($shortcodes_enabled);
+            _shortcode_get_shortcodes($shortcodes_enabled);
             array_unshift($heap_index, '_string_');
             array_unshift($heap, $str);
             $found = TRUE;
