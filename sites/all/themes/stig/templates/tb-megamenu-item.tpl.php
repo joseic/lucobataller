@@ -1,5 +1,5 @@
 <?php
-  $a_classes[] = $submenu ? ' mn-has-sub' : '';
+  $item['link']['#attributes']['class'][] = $submenu ? ' mn-has-sub' : '';
   $angle_class = $item['link']['depth'] == 1 ? 'down' : 'right right';
   $href = strpos($item['link']['href'], "_anchor_") !== false ? str_replace("http://_anchor_", '#', $item['link']['href']) : url($item['link']['href'], $item['link']['options']);
   if (drupal_is_front_page()) {
@@ -11,7 +11,7 @@
   <?php if(!empty($item_config['caption'])) : ?>
     <a class="mn-group-title" style="height: 97px; line-height: 75px;"><?php print t($item_config['caption']);?></a>
   <?php endif;?>
-  <a href="<?php print in_array($item['link']['href'], array('<nolink>')) ? "#" : $href; ?>" class="<?php print implode(" ", $a_classes);?>">
+  <a href="<?php print in_array($item['link']['href'], array('<nolink>')) ? "#" : $href; ?>" <?php print drupal_attributes($item['link']['#attributes']); ?>>
     <?php if(!empty($item_config['xicon'])) : ?>
       <i class="<?php print $item_config['xicon'];?> fa-sm"></i> 
     <?php endif;?>    

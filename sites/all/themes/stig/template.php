@@ -55,7 +55,7 @@ function stig_preprocess_html(&$variables) {
  * Overrides theme_menu_tree().
  */
 function stig_menu_tree(&$variables) {
-  return $variables['tree'];
+  return '<ul>' . $variables['tree'] . '</ul>';
 }
 
 /**

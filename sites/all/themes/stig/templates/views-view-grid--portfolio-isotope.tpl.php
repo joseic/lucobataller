@@ -17,7 +17,7 @@ $class = isset($column_classes[0][0]) ? $column_classes[0][0] : '';
   <div class="works-filter font-alt align-center">
     <a href="#" class="filter active" data-filter="*"><?php print t('All works'); ?></a>
     <?php  foreach($projects_categories as $id => $category): ?>
-      <a href="#" class="filter" data-filter=".<?php print $id; ?>"><?php print $category; ?></a>
+      <a href="#" class="filter" data-filter=".<?php print $id; ?>"><?php print t($category); ?></a>
     <?php endforeach; ?>
   </div>
 <?php endif; ?>

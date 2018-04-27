@@ -708,8 +708,11 @@ function split_height_init(){
       
         $(".ssh-table, .split-section-content").css("height", "auto");
         if ($(window).width() > 992) {
-            $(".ssh-table, .split-section-content").equalHeights();
-        }
+          //$(".ssh-table, .split-section-content").equalHeights();
+          $('.split-section').each(function() {
+            $(this).find('.ssh-table, .split-section-content').equalHeights();
+          });
+    }
         
     })(jQuery);
 }

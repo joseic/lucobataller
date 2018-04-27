@@ -73,7 +73,6 @@
  * @see template_preprocess_node()
  * @see template_process()
  */
-$comments_count = isset($content['comments']['comments']) ? array_filter($content['comments']['comments'], '_count_comments') : 0;
 hide($content['comments']);
 hide($content['links']);
 hide($content['links']['comment']);
@@ -105,7 +104,7 @@ hide($content['links']['translation']);
             <?php print render($content['field_blog_category']); ?>
             <span class="separator">&nbsp;</span>
           <?php endif; ?>
-          <a href="#"><i class="fa fa-comments"></i> <?php print $comments_count . ' ' . t('Comments'); ?></a>
+          <a href="#"><i class="fa fa-comments"></i> <?php print $comment_count . ' ' . t('Comments'); ?></a>
       </div>
       
       <!-- Text Intro -->

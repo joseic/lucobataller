@@ -51,4 +51,15 @@ function stig_form_system_theme_settings_alter(&$form, &$form_state) {
     '#title' => t('Phone'),
     '#default_value' => theme_get_setting('phone'),
   );
+
+  $form['options']['gmap'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Google Map Settings'),
+  );
+  $form['options']['gmap']['gmap_key'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Google Maps API Key'),
+    '#default_value' => theme_get_setting('gmap_key') ? theme_get_setting('gmap_key') : '',
+    '#description' => 'More information: <a href = "https://developers.google.com/maps/documentation/javascript/get-api-key">https://developers.google.com/maps/documentation/javascript/get-api-key</a>'
+  );
 }
