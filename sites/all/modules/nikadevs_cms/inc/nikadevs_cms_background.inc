@@ -188,7 +188,7 @@ function nikadevs_cms_preprocess_html(&$variables) {
       // If match found - use this layout
       if($page_match) {
         $file = file_load($setting['fid']);
-        if($file->fid) {
+        if(isset($file->fid) && $file->fid) {
           $image = file_create_url($file->uri);
           $css = "background-image: url('" . $image . "') !important;
             background-repeat: no-repeat;

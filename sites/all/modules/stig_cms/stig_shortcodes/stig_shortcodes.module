@@ -511,12 +511,15 @@ function _stig_shortcodes_shortcode_attributes($attrs) {
   if(empty($attrs)) {
     return '';
   }
-  $allowed_attributes = array('class' => 'class', 'href' => 'href', 'id' => 'id', 'animation' => 'class', 'animation_delay' => 'data-wow-duration', 'data-background' => 'data-background', 'style' => 'style', 'extra_style' => 'style', 'target' => 'target');
+  $allowed_attributes = array('class' => 'class', 'href' => 'href', 'id' => 'id', 'animation' => 'class', 'animation_delay' => 'data-wow-delay', 'data-background' => 'data-background', 'style' => 'style', 'extra_style' => 'style', 'target' => 'target');
   $attrs['class'] = isset($attrs['class']) ? $attrs['class'] : ''; 
   if (isset($attrs['link']) && $attrs['link'] == $_GET['q']) {
     $attrs['class'] .= ' active'; 
   }
   if (isset($attrs['animation']) && $attrs['animation']) {
+    if(isset($attrs['animation_delay'])) {
+      $attrs['animation_delay'] = ($attrs['animation_delay'] / 1000) . 's';
+    }
     $attrs['class'] .= ' wow'; 
   }
 
@@ -1432,7 +1435,6 @@ function stig_shortcodes_shortcode_slider_item($attrs, $text) {
 }
 
 function stig_shortcodes_shortcode_image($attrs, $text) {
-  $attrs['class'] = isset($attrs['class']) ? $attrs['class'] : '';
   $file = isset($attrs['fid']) && !empty($attrs['fid']) ? file_load($attrs['fid']) : '';
   $uri = isset($file->uri) ? $file->uri : '';
   if(!$uri) {
@@ -1440,12 +1442,15 @@ function stig_shortcodes_shortcode_image($attrs, $text) {
   }
   $title = isset($attrs['title']) ? $attrs['title'] : '';
   $alt = isset($attrs['alt']) ? $attrs['alt'] : '';
-  $attributes = array('style' => '');
+  $attributes = array('style' => '', 'class' => 'img-responsive');
   if(isset($attrs['width']) && $attrs['width']) {
     $attributes['style'] .= 'width:' . $attrs['width'] . 'px;';
   }
   if(isset($attrs['height']) && $attrs['height']) {
     $attributes['style'] .= 'height:' . $attrs['height'] . 'px;';
+  }
+  if(isset($attrs['align']) && $attrs['align'] == 'center') {
+  	$attributes['class'] .= ' center-block';
   }
   if(isset($attrs['image_style']) && $attrs['image_style']) {
     $img = theme('image_style', array('style_name' => $attrs['image_style'], 'title' => $title, 'alt' => $alt, 'path' => $uri, 'attributes' => $attributes));
@@ -1482,7 +1487,7 @@ function stig_shortcodes_shortcode_image_settings($attrs, $text) {
     '#prefix' => '</div><div class = "col-sm-3">',
   );
   $aligns = array('' => t(' - None - '), 'center' => t('Center'), 'left' => t('Left'), 'right' => t('Right'));
-  $form['style_align'] = array(
+  $form['align'] = array(
     '#type' => 'select',
     '#title' => t('Align'),
     '#options' => $aligns,

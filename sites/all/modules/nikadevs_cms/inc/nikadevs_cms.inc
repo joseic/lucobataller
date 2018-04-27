@@ -8,8 +8,13 @@ function _nikadevs_render_block($module, $delta) {
 function _nikadevs_cms_get_active_layout() {
   $layout = &drupal_static(__FUNCTION__);
   if (!isset($layout)) {
-    $current_theme = variable_get('theme_default', 'none');
+    global $theme_key;
+    $current_theme = $theme_key;
     $layouts = variable_get('nikadevs_cms_layout_' . $current_theme, array());
+    if(!is_array($layouts) || empty($layouts)) {
+      $layout = array();
+      return $layout;
+    }
     $active_layout = 'layout-default';
     foreach($layouts as $layout_key => $layout) {
       if(!empty($layout['pages'])) {
@@ -30,7 +35,8 @@ function _nikadevs_cms_get_active_layout() {
     }
     
     if(!isset($layouts[$active_layout])) {
-      return array();
+      $layout = array();
+      return $layout;
     }
     $layout = $layouts[$active_layout];
     unset($layout['rows']['id-0']);
@@ -117,6 +123,7 @@ function _nikadevs_cms_active_layout($vars) {
       unset($layout['regions'][$key]);
     }
     else {
+      $region['settings'] = !isset($region['settings']) || !is_array($region['settings']) ? array() : $region['settings'];
       if (isset($region['settings']['animation']) && !empty($region['settings']['animation'])) {
         $layout['regions'][$key]['attributes']['data-animation'] = $region['settings']['animation'];
       }
@@ -131,8 +138,9 @@ function _nikadevs_cms_active_layout($vars) {
           $layout['regions'][$key]['attributes']['style'] .= str_replace('_', '-', $padding) . ': ' . $region['settings'][$padding] . 'px; ';
         }
       }
+      $region['settings']['tag'] = isset($region['settings']['tag']) ? $region['settings']['tag'] : 'div';
       $layout['regions'][$key]['attributes']['class'][] = isset($region['settings']['class']) ? $region['settings']['class'] : '';
-      $layout['regions'][$key]['settings']['tag'] = isset($region['settings']['tag']) ? ($region['settings']['tag'] == 'none' ? '' : $region['settings']['tag']) : 'div';
+      $layout['regions'][$key]['settings']['tag'] = $region['settings']['tag'] == 'none' ? '' : $region['settings']['tag'];
       if (isset($region['settings']['block_id'])) {
         list($module, $delta) = explode('|', $region['settings']['block_id']);
         $render = _nikadevs_render_block($module, $delta);
@@ -144,4 +152,16 @@ function _nikadevs_cms_active_layout($vars) {
     }
   }
   return $layout;
+}
+
+/**
+* Parse user link into correct url
+*/
+function nikadevs_parse_url($link = '') {
+  $href = !empty($link) ? $link : '#';
+  if(strpos($href, '#') === FALSE) {
+    $url = drupal_parse_url($href);
+    $href = url($url['path'], $url);
+  }
+  return $href;
 }
